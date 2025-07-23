@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const SensorySimHomePage(),
         '/visual': (context) => const VisualDisorderSelectionPage(),
-        '/color-blindness': (context) => const ColorBlindnessSimulationPage(),
+        '/color-blindness': (context) => const ColorBlindSimulation(),
         '/tunnel-vision': (context) => const TunnelVisionSimulationPage(),
         '/blurred-vision': (context) => const BlurredVisionSimulationPage(),
         // You can add auditory and sensory overload routes similarly later.

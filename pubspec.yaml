@@ -11,6 +11,10 @@ dependencies:
     sdk: flutter
   lucide_icons_flutter: ^3.0.7
   camera: ^0.11.2
+  colorfilter_generator: ^0.0.8
+  http:
+  just_audio: ^0.9.30
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

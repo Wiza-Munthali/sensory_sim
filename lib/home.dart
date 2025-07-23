@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class SensorySimHomePage extends StatelessWidget {
   const SensorySimHomePage({super.key});
@@ -17,6 +23,12 @@ class SensorySimHomePage extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.volume2),
+            onPressed: () => speak(),
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -70,6 +82,35 @@ class SensorySimHomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> speak() async {
+    final text =
+        'Welcome to SenseShift. Step into someone else’s shoes and design more inclusively.';
+
+    final response = await http.post(
+      Uri.parse('http://192.168.1.199:8888/speak'),
+      headers: {'Content-Type': 'application/json'},
+      // body: '{"text": "$text", "voice": "nova"}',
+      body: jsonEncode({
+        "text": text,
+        "voice": "nova",
+        "instructions":
+            "Speak like you're reassuring a close friend — gentle, sincere, and full of kindness.",
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/openai_tts.mp3');
+      await file.writeAsBytes(response.bodyBytes);
+
+      final player = AudioPlayer();
+      await player.setFilePath(file.path);
+      await player.play();
+    } else {
+      print('TTS failed: ${response.body}');
+    }
   }
 }
 
