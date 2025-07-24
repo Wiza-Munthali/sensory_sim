@@ -46,8 +46,11 @@ class _TunnelVisionSimulationPageState
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('Tunnel Vision Simulation'),
+        backgroundColor: Colors.black54,
+        title: const Text(
+          'Tunnel Vision Simulation',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body:

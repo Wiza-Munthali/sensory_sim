@@ -23,3 +23,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/normal.mp3
+    - assets/moderate_muffled.mp3
+    - assets/severe_muffled.mp3
+    - assets/tinnitus_simulation_30s.wav
