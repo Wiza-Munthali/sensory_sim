@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sensory_sim/auditory/hub.dart';
 import 'package:sensory_sim/auditory/muffled.dart';
 import 'package:sensory_sim/auditory/tinnitus.dart';
+import 'package:sensory_sim/firebase_options.dart';
 import 'package:sensory_sim/home.dart';
 import 'package:sensory_sim/visual/blur.dart';
 import 'package:sensory_sim/visual/color/intro.dart';
@@ -10,8 +12,15 @@ import 'package:sensory_sim/visual/hub.dart';
 import 'package:sensory_sim/visual/macular.dart';
 import 'package:sensory_sim/visual/tunnel.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initializeFirebase();
+
   runApp(const MainApp());
+}
+
+_initializeFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
 class MainApp extends StatelessWidget {
@@ -38,7 +47,7 @@ class MainApp extends StatelessWidget {
             (context) => const MacularDegenerationSimulationPage(),
         '/diabetic-retinopathy':
             (context) => const DiabeticRetinopathySimulationPage(),
-      
+
         '/auditory': (context) => const AuditoryDisorderSelectionPage(),
         '/muffled-hearing': (context) => const MuffledHearingSimulationPage(),
         '/tinnitus-sim': (context) => const TinnitusSimulationPage(),

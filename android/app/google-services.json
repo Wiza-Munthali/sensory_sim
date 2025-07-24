@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "907167763392",
+    "project_id": "sensory-sim-1d997",
+    "storage_bucket": "sensory-sim-1d997.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907167763392:android:44ebcca05c914fceef5625",
+        "android_client_info": {
+          "package_name": "com.example.sensory_sim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuN-MxvtWqjxUhQ46iwbudrnQ3DUcD3M0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
