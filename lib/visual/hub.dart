@@ -43,6 +43,15 @@ class VisualDisorderSelectionPage extends StatelessWidget {
             routeName: '/blurred-vision',
             gradientColors: [Color(0xFFFFD1DC), Color(0xFFFDE2E4)],
           ),
+          SizedBox(height: 20),
+          VisualDisorderCard(
+            icon: LucideIcons.focus,
+            label: 'Macular Degeneration',
+            description:
+                'Experience central vision loss and distortion with camera.',
+            routeName: '/macular-degeneration',
+            gradientColors: [Color(0xFFE8D5B7), Color(0xFFF4E2C1)],
+          ),
         ],
       ),
     );
