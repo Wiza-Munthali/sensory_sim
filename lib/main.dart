@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sensory_sim/home.dart';
 import 'package:sensory_sim/visual/blur.dart';
-import 'package:sensory_sim/visual/color_pallet.dart';
+import 'package:sensory_sim/visual/color/intro.dart';
+import 'package:sensory_sim/visual/diabetic_retinopathy.dart';
 import 'package:sensory_sim/visual/hub.dart';
 import 'package:sensory_sim/visual/macular.dart';
 import 'package:sensory_sim/visual/tunnel.dart';
@@ -27,12 +28,14 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const SensorySimHomePage(),
         '/visual': (context) => const VisualDisorderSelectionPage(),
-        '/color-blindness': (context) => const ColorBlindSimulation(),
+        '/color-blindness': (context) => const ColorBlindnessIntroPage(),
         '/tunnel-vision': (context) => const TunnelVisionSimulationPage(),
         '/blurred-vision': (context) => const BlurredVisionSimulationPage(),
         '/macular-degeneration':
             (context) => const MacularDegenerationSimulationPage(),
-        // You can add auditory and sensory overload routes similarly later.
+        '/diabetic-retinopathy':
+            (context) => const DiabeticRetinopathySimulationPage(),
+      
       },
     );
   }

@@ -11,7 +11,7 @@ class ColorBlindnessSimulationPage extends StatefulWidget {
 class _ColorBlindnessSimulationPageState
     extends State<ColorBlindnessSimulationPage> {
   int _selectedType =
-      0; // 0: Normal, 1: Deuteranopia, 2: Protanopia, 3: Tritanopia
+      0; 
   bool _showSimulation = false;
 
   final List<Map<String, dynamic>> _colorBlindTypes = [
@@ -52,7 +52,7 @@ class _ColorBlindnessSimulationPageState
       ),
       body: Column(
         children: [
-          // Type selector
+         
           Container(
             height: 120,
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -114,7 +114,7 @@ class _ColorBlindnessSimulationPageState
             ),
           ),
 
-          // Description
+         
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             padding: const EdgeInsets.all(16),
@@ -128,7 +128,7 @@ class _ColorBlindnessSimulationPageState
             ),
           ),
 
-          // Content area
+         
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
@@ -393,11 +393,11 @@ class _ColorBlindnessSimulationPageState
 
   Color _simulateColorBlindness(Color originalColor) {
     switch (_selectedType) {
-      case 1: // Deuteranopia (green-blind)
+      case 1: 
         return _simulateDeuteranopia(originalColor);
-      case 2: // Protanopia (red-blind)
+      case 2: 
         return _simulateProtanopia(originalColor);
-      case 3: // Tritanopia (blue-blind)
+      case 3: 
         return _simulateTritanopia(originalColor);
       default:
         return originalColor;
@@ -405,7 +405,7 @@ class _ColorBlindnessSimulationPageState
   }
 
   Color _simulateDeuteranopia(Color color) {
-    // Simplified simulation: reduce green component, shift to yellows/blues
+    
     final r = color.red;
     final g = (color.green * 0.3).round();
     final b = color.blue;
@@ -414,7 +414,7 @@ class _ColorBlindnessSimulationPageState
   }
 
   Color _simulateProtanopia(Color color) {
-    // Simplified simulation: reduce red component
+    
     final r = (color.red * 0.2).round();
     final g = color.green;
     final b = color.blue;
@@ -423,7 +423,7 @@ class _ColorBlindnessSimulationPageState
   }
 
   Color _simulateTritanopia(Color color) {
-    // Simplified simulation: reduce blue component, shift yellows to pinks
+    
     final r = color.red;
     final g = color.green;
     final b = (color.blue * 0.3).round();

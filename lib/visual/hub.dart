@@ -52,6 +52,15 @@ class VisualDisorderSelectionPage extends StatelessWidget {
             routeName: '/macular-degeneration',
             gradientColors: [Color(0xFFE8D5B7), Color(0xFFF4E2C1)],
           ),
+          SizedBox(height: 20),
+          VisualDisorderCard(
+            icon: LucideIcons.eye,
+            label: 'Diabetic Retinopathy',
+            description:
+                'Simulate blood vessel damage and vision complications.',
+            routeName: '/diabetic-retinopathy',
+            gradientColors: [Color(0xFFFFB3BA), Color(0xFFFFDADD)],
+          ),
         ],
       ),
     );
