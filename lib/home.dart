@@ -40,14 +40,14 @@ class SensorySimHomePage extends StatelessWidget {
             gradientColors: [Color(0xFFD8CFF1), Color(0xFFB8C6FF)],
           ),
           SizedBox(height: 20),
-          SensoryOptionCard(
-            icon: LucideIcons.vibrate,
-            label: 'Sensory Overload',
-            description:
-                'Simulate hypersensitivity and environmental distractions.',
-            routeName: '/overload',
-            gradientColors: [Color(0xFFFFE0C1), Color(0xFFFFC7C7)],
-          ),
+          // SensoryOptionCard(
+          //   icon: LucideIcons.vibrate,
+          //   label: 'Sensory Overload',
+          //   description:
+          //       'Simulate hypersensitivity and environmental distractions.',
+          //   routeName: '/overload',
+          //   gradientColors: [Color(0xFFFFE0C1), Color(0xFFFFC7C7)],
+          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

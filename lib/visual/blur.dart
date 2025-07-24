@@ -170,49 +170,51 @@ class _BlurredVisionSimulationPageState
   Future<void> getFacts() async {
     print('Fetching facts about blurred vision...');
     // This function can be used to fetch facts from an API or local database
-    final prompt =
-        'Blurred vision cause by cataracts or myopia. Provide interesting facts about this condition.';
+    try {
+      final prompt =
+          'Blurred vision cause by cataracts or myopia. Provide interesting facts about this condition.';
 
-    final response = await http.post(
-      Uri.parse('http://192.168.1.199:8888/facts'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({"prompt": prompt}),
-    );
-
-    if (response.statusCode == 200) {
-      final facts = jsonDecode(response.body);
-      print('Facts fetched successfully: ${facts['output_text']}');
-      setState(() {
-        _facts = facts['output_text'];
-      });
-
-      // Optionally, you can also play an audio file with the facts
-      // Get audio from the server
-      _audioPlayer = AudioPlayer();
-
-      final result = await http.post(
-        Uri.parse('http://192.168.1.199:8888/speak'),
+      final response = await http.post(
+        Uri.parse('http://192.168.1.199:8888/facts'),
         headers: {'Content-Type': 'application/json'},
-        // body: '{"text": "$text", "voice": "nova"}',
-        body: jsonEncode({
-          "text": _facts,
-          "voice": "nova",
-          "instructions":
-              "Speak like you're reassuring a close friend — gentle, sincere, and full of kindness.",
-        }),
+        body: jsonEncode({"prompt": prompt}),
       );
 
-      if (result.statusCode == 200) {
-        final dir = await getTemporaryDirectory();
-        final file = File('${dir.path}/blurred_vision_facts.mp3');
-        await file.writeAsBytes(result.bodyBytes);
-        await _audioPlayer!.setFilePath(file.path);
-        print('Audio facts loaded successfully');
+      if (response.statusCode == 200) {
+        final facts = jsonDecode(response.body);
+        print('Facts fetched successfully: ${facts['output_text']}');
+        setState(() {
+          _facts = facts['output_text'];
+        });
+
+        // Optionally, you can also play an audio file with the facts
+        // Get audio from the server
+        _audioPlayer = AudioPlayer();
+
+        final result = await http.post(
+          Uri.parse('http://192.168.1.199:8888/speak'),
+          headers: {'Content-Type': 'application/json'},
+          // body: '{"text": "$text", "voice": "nova"}',
+          body: jsonEncode({
+            "text": _facts,
+            "voice": "nova",
+            "instructions":
+                "Speak like you're reassuring a close friend — gentle, sincere, and full of kindness.",
+          }),
+        );
+
+        if (result.statusCode == 200) {
+          final dir = await getTemporaryDirectory();
+          final file = File('${dir.path}/blurred_vision_facts.mp3');
+          await file.writeAsBytes(result.bodyBytes);
+          await _audioPlayer!.setFilePath(file.path);
+          print('Audio facts loaded successfully');
+        } else {
+          print('Failed to fetch audio facts: ${result.body}');
+        }
       } else {
-        print('Failed to fetch audio facts: ${result.body}');
+        print('Failed to fetch facts: ${response.body}');
       }
-    } else {
-      print('Failed to fetch facts: ${response.body}');
-    }
+    } catch (e) {}
   }
 }

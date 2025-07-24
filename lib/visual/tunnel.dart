@@ -1,7 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'package:http/http.dart' as http;
 
 class TunnelVisionSimulationPage extends StatefulWidget {
   const TunnelVisionSimulationPage({super.key});
@@ -17,9 +23,13 @@ class _TunnelVisionSimulationPageState
   late Future<void> _initializeControllerFuture;
   late List<CameraDescription> _cameras;
 
+  String? _facts;
+  AudioPlayer? _audioPlayer;
+
   @override
   void initState() {
     super.initState();
+    getFacts();
     _setupCamera();
   }
 
@@ -38,6 +48,9 @@ class _TunnelVisionSimulationPageState
   @override
   void dispose() {
     _controller?.dispose();
+    _audioPlayer?.dispose();
+    _facts = null;
+    _audioPlayer = null;
     super.dispose();
   }
 
@@ -129,9 +142,9 @@ class _TunnelVisionSimulationPageState
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
-                        'Fun Facts About Tunnel Vision',
+                        'Facts About Tunnel Vision',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -141,13 +154,7 @@ class _TunnelVisionSimulationPageState
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Tunnel vision can be caused by conditions like glaucoma or retinitis pigmentosa. It restricts peripheral vision, making it feel like looking through a narrow tube.',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        'Despite the challenge, people with tunnel vision often develop strong central focus and may use aids like visual field expanders.',
+                        _facts ?? 'Loading facts...',
                         style: TextStyle(fontSize: 16, color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -158,5 +165,63 @@ class _TunnelVisionSimulationPageState
             ),
           ),
     );
+
+    Future.delayed(const Duration(seconds: 1), () async {
+      if (_audioPlayer != null) {
+        await _audioPlayer!.seek(Duration.zero);
+        await _audioPlayer!.play();
+      }
+    });
+  }
+
+  Future<void> getFacts() async {
+    print('Fetching facts about tunnel vision...');
+    // This function can be used to fetch facts from an API or local database
+    try {
+      final prompt =
+          'Tunnel vision from conditions like glaucoma or retinitis pigmentosa. Provide interesting facts about this condition.';
+
+      final response = await http.post(
+        Uri.parse('http://192.168.1.199:8888/facts'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"prompt": prompt}),
+      );
+
+      if (response.statusCode == 200) {
+        final facts = jsonDecode(response.body);
+        print('Facts fetched successfully: ${facts['output_text']}');
+        setState(() {
+          _facts = facts['output_text'];
+        });
+
+        // Optionally, you can also play an audio file with the facts
+        // Get audio from the server
+        _audioPlayer = AudioPlayer();
+
+        final result = await http.post(
+          Uri.parse('http://192.168.1.199:8888/speak'),
+          headers: {'Content-Type': 'application/json'},
+          // body: '{"text": "$text", "voice": "nova"}',
+          body: jsonEncode({
+            "text": _facts,
+            "voice": "nova",
+            "instructions":
+                "Speak like you're reassuring a close friend — gentle, sincere, and full of kindness.",
+          }),
+        );
+
+        if (result.statusCode == 200) {
+          final dir = await getTemporaryDirectory();
+          final file = File('${dir.path}/tunnel_vision_facts.mp3');
+          await file.writeAsBytes(result.bodyBytes);
+          await _audioPlayer!.setFilePath(file.path);
+          print('Audio facts loaded successfully');
+        } else {
+          print('Failed to fetch audio facts: ${result.body}');
+        }
+      } else {
+        print('Failed to fetch facts: ${response.body}');
+      }
+    } catch (e) {}
   }
 }
