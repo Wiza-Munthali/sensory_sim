@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sensory_sim/auditory/hub.dart';
+import 'package:sensory_sim/auditory/muffled.dart';
+import 'package:sensory_sim/auditory/tinnitus.dart';
 import 'package:sensory_sim/home.dart';
 import 'package:sensory_sim/visual/blur.dart';
 import 'package:sensory_sim/visual/color/intro.dart';
@@ -36,6 +39,10 @@ class MainApp extends StatelessWidget {
         '/diabetic-retinopathy':
             (context) => const DiabeticRetinopathySimulationPage(),
       
+        '/auditory': (context) => const AuditoryDisorderSelectionPage(),
+        '/muffled-hearing': (context) => const MuffledHearingSimulationPage(),
+        '/tinnitus-sim': (context) => const TinnitusSimulationPage(),
+        // You can add auditory and sensory overload routes similarly later.
       },
     );
   }
