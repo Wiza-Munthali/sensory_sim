@@ -21,7 +21,7 @@ class AuditoryDisorderSelectionPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: const [
           AuditoryDisorderCard(
-            icon: LucideIcons.waves,
+            icon: Icons.graphic_eq_rounded,
             label: 'Tinnitus',
             description: 'Simulate ringing or buzzing in the ears.',
             routeName: '/tinnitus-sim',

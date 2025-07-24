@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:video_player/video_player.dart';
 
 class MuffledHearingSimulationPage extends StatefulWidget {
   const MuffledHearingSimulationPage({super.key});
@@ -15,24 +16,48 @@ class MuffledHearingSimulationPage extends StatefulWidget {
       _MuffledHearingSimulationPageState();
 }
 
-class _MuffledHearingSimulationPageState extends State<MuffledHearingSimulationPage> {
+class _MuffledHearingSimulationPageState
+    extends State<MuffledHearingSimulationPage> {
   late AudioPlayer _audioPlayer;
   late AudioPlayer _factAudioPlayer;
   String? _facts;
   bool _isPlaying = false;
+
+  late VideoPlayerController _controller;
+
+  bool hideElements = true;
 
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
     _factAudioPlayer = AudioPlayer();
+    _controller = VideoPlayerController.asset('assets/muffled_hearing.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
     getFacts();
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _controller.play();
+    });
+
+    _controller.addListener(() {
+      if (_controller.value.isInitialized && _controller.value.isCompleted) {
+        if (mounted) {
+          setState(() {
+            hideElements = false;
+          });
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _audioPlayer.dispose();
     _factAudioPlayer.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -56,75 +81,86 @@ class _MuffledHearingSimulationPageState extends State<MuffledHearingSimulationP
   }
 
   Future<void> getFacts() async {
-    final prompt = 'Muffled hearing or conductive hearing loss. Provide interesting facts about this condition.';
+    try {
+      final prompt =
+          'Muffled hearing or conductive hearing loss. Provide interesting facts about this condition.';
 
-    final response = await http.post(
-      Uri.parse('http://192.168.1.199:8888/facts'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({"prompt": prompt}),
-    );
-
-    if (response.statusCode == 200) {
-      final facts = jsonDecode(response.body);
-      _facts = facts['output_text'];
-
-      final ttsResponse = await http.post(
-        Uri.parse('http://192.168.1.199:8888/speak'),
+      final response = await http.post(
+        Uri.parse('http://192.168.1.199:8888/facts'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "text": _facts,
-          "voice": "nova",
-          "instructions":
-              "Speak calmly like you're helping someone understand a new experience for the first time.",
-        }),
+        body: jsonEncode({"prompt": prompt}),
       );
 
-      if (ttsResponse.statusCode == 200) {
-        final dir = await getTemporaryDirectory();
-        final file = File('${dir.path}/muffled_facts.mp3');
-        await file.writeAsBytes(ttsResponse.bodyBytes);
-        await _factAudioPlayer.setFilePath(file.path);
+      if (response.statusCode == 200) {
+        final facts = jsonDecode(response.body);
+        _facts = facts['output_text'];
+
+        final ttsResponse = await http.post(
+          Uri.parse('http://192.168.1.199:8888/speak'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            "text": _facts,
+            "voice": "nova",
+            "instructions":
+                "Speak calmly like you're helping someone understand a new experience for the first time.",
+          }),
+        );
+
+        if (ttsResponse.statusCode == 200) {
+          final dir = await getTemporaryDirectory();
+          final file = File('${dir.path}/muffled_facts.mp3');
+          await file.writeAsBytes(ttsResponse.bodyBytes);
+          await _factAudioPlayer.setFilePath(file.path);
+        }
       }
-    }
+    } catch (e) {}
   }
 
   void _showFunFactsDialog() {
     showDialog(
       context: context,
       barrierColor: Colors.black54,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(25),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Fact About Muffled Hearing',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                    textAlign: TextAlign.center,
+      builder:
+          (_) => Dialog(
+            backgroundColor: Colors.transparent,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(color: Colors.white.withOpacity(0.2)),
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    _facts ?? 'Loading facts...',
-                    style: const TextStyle(fontSize: 16, color: Colors.white),
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Fact About Muffled Hearing',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        _facts ?? 'Loading facts...',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
     );
 
     Future.delayed(const Duration(milliseconds: 800), () async {
@@ -133,7 +169,11 @@ class _MuffledHearingSimulationPageState extends State<MuffledHearingSimulationP
     });
   }
 
-  Widget _buildAudioCard({required String level, required String label, required Color color}) {
+  Widget _buildAudioCard({
+    required String level,
+    required String label,
+    required Color color,
+  }) {
     return GestureDetector(
       onTap: () => playSimulation(level),
       child: Container(
@@ -161,10 +201,18 @@ class _MuffledHearingSimulationPageState extends State<MuffledHearingSimulationP
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-            const Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 28),
+            const Icon(
+              Icons.play_circle_fill_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
           ],
         ),
       ),
@@ -173,69 +221,150 @@ class _MuffledHearingSimulationPageState extends State<MuffledHearingSimulationP
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFEEF3F8),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: const Text(
-          'Muffled Hearing Simulation',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: Stack(
         children: [
-          ListView(
-            padding: const EdgeInsets.only(top: 30, bottom: 120),
-            children: [
-              const Center(
-                child: Text(
-                  "Select Hearing Level",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black54),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildAudioCard(
-                level: 'normal',
-                label: 'Normal Hearing',
-                color: const Color.fromARGB(255, 35, 129, 222),
-              ),
-              _buildAudioCard(
-                level: 'moderate',
-                label: 'Moderate Muffled Hearing',
-                color: const Color.fromARGB(255, 76, 89, 118),
-              ),
-              _buildAudioCard(
-                level: 'severe',
-                label: 'Severe Muffled Hearing',
-                color: const Color.fromARGB(255, 33, 36, 40),
-              ),
-            ],
+          SizedBox(
+            height: height,
+            width: width,
+            child:
+                _controller.value.isInitialized
+                    ? VideoPlayer(_controller)
+                    : const SizedBox.shrink(),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: GestureDetector(
-              onTap: _showFunFactsDialog,
-              child: Container(
-                margin: const EdgeInsets.all(20),
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Simulating muffled hearing or conductive hearing loss. Tap to learn more.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child:
+                hideElements
+                    ? const SizedBox.shrink()
+                    : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Experience",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        _buildAudioCard(
+                          level: 'normal',
+                          label: 'Normal Hearing',
+                          color: const Color.fromARGB(255, 35, 129, 222),
+                        ),
+                        _buildAudioCard(
+                          level: 'moderate',
+                          label: 'Moderate Muffled Hearing',
+                          color: const Color.fromARGB(255, 76, 89, 118),
+                        ),
+                        _buildAudioCard(
+                          level: 'severe',
+                          label: 'Severe Muffled Hearing',
+                          color: const Color.fromARGB(255, 33, 36, 40),
+                        ),
+
+                        const SizedBox(height: 60),
+
+                        IconButton(
+                          onPressed: () {
+                            _controller.seekTo(Duration.zero);
+                            _controller.play();
+                            setState(() {
+                              hideElements = true;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.replay_rounded,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                        const Text(
+                          'Replay',
+                          style: TextStyle(fontSize: 14, color: Colors.white70),
+                        ),
+                      ],
+                    ),
+          ),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child:
+                hideElements
+                    ? const SizedBox.shrink()
+                    : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: GestureDetector(
+                        onTap: _showFunFactsDialog,
+                        child: Container(
+                          margin: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            'Simulating muffled hearing or conductive hearing loss. Tap to learn more.',
+                            style: TextStyle(color: Colors.white, fontSize: 13),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+          ),
+
+          Positioned(
+            top: 56,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  decoration: ShapeDecoration(
+                    shape: CircleBorder(),
+                    color: Colors.black,
                   ),
-                  textAlign: TextAlign.center,
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(Icons.arrow_back, color: Colors.white),
+                  ),
                 ),
-              ),
+
+                Flexible(
+                  child: Text(
+                    'Muffled Hearing Simulation',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+                Container(
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    color: Colors.black,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/');
+                    },
+                    child: const Icon(Icons.home_rounded, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );
