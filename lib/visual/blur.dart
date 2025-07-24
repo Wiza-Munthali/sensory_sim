@@ -175,7 +175,7 @@ class _BlurredVisionSimulationPageState
           'Blurred vision cause by cataracts or myopia. Provide interesting facts about this condition.';
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.199:8888/facts'),
+        Uri.parse('https://sensory-backend-8xd4.onrender.com/facts'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({"prompt": prompt}),
       );
@@ -192,7 +192,7 @@ class _BlurredVisionSimulationPageState
         _audioPlayer = AudioPlayer();
 
         final result = await http.post(
-          Uri.parse('http://192.168.1.199:8888/speak'),
+          Uri.parse('https://sensory-backend-8xd4.onrender.com/speak'),
           headers: {'Content-Type': 'application/json'},
           // body: '{"text": "$text", "voice": "nova"}',
           body: jsonEncode({
@@ -213,7 +213,9 @@ class _BlurredVisionSimulationPageState
           print('Failed to fetch audio facts: ${result.body}');
         }
       } else {
-        print('Failed to fetch facts: ${response.body}');
+        print(
+          'Failed to fetch facts: ${response.body} (${response.statusCode})',
+        );
       }
     } catch (e) {}
   }
