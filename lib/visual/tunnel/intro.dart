@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sensory_sim/visual/tunnel/tunnel.dart';
+import 'package:sensory_sim/visual/tunnel/tunnel_info.dart';
 import 'package:video_player/video_player.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'color.dart';
-import 'color_pallet.dart';
 
-class ColorBlindnessIntroPage extends StatefulWidget {
-  const ColorBlindnessIntroPage({super.key});
+class TunnelVisionIntroPage extends StatefulWidget {
+  const TunnelVisionIntroPage({super.key});
 
   @override
-  State<ColorBlindnessIntroPage> createState() =>
-      _ColorBlindnessIntroPageState();
+  State<TunnelVisionIntroPage> createState() => _TunnelVisionIntroPageState();
 }
 
-class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
+class _TunnelVisionIntroPageState extends State<TunnelVisionIntroPage> {
   late VideoPlayerController _controller;
   bool _isVideoInitialized = false;
   bool _videoFinished = false;
@@ -26,7 +25,9 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
 
   Future<void> _initializeVideo() async {
     try {
-      _controller = VideoPlayerController.asset('assets/color_blindness.mp4');
+      _controller = VideoPlayerController.asset(
+        'assets/tunnel_vision.mp4', // Replace with a tunnel vision-specific video if available
+      );
       await _controller.initialize();
       _controller.setLooping(false);
       _controller.setVolume(1.0);
@@ -79,7 +80,7 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
           ),
         ),
         title: const Text(
-          'Color Blindness',
+          'Tunnel Vision',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
@@ -141,46 +142,10 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Description Card
-                      // Container(
-                      // padding: const EdgeInsets.all(20),
-                      // decoration: BoxDecoration(
-                      //   color: Colors.white,
-                      //   borderRadius: BorderRadius.circular(16),
-                      //   boxShadow: [
-                      //     BoxShadow(
-                      //       color: Colors.black.withOpacity(0.1),
-                      //       blurRadius: 10,
-                      //       offset: const Offset(0, 2),
-                      //     ),
-                      //   ],
-                      // ),
-                      // child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      // children: [
-                      // const Text(
-                      //   'About Color Blindness',
-                      //   style: TextStyle(
-                      //     fontSize: 20,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 12),
-                      // Text(
-                      //   'Color blindness affects approximately 8% of men and 0.5% of women worldwide. Most people with color blindness can see colors, but may confuse certain shades.',
-                      //   style: TextStyle(
-                      //     fontSize: 16,
-                      //     color: Colors.grey.shade600,
-                      //     height: 1.5,
-                      //   ),
-                      // ),
-                      // ],
-                      // ),
-                      // ),
                       const SizedBox(height: 24),
 
                       const Text(
-                        'Experience',
+                        'Experience Tunnel Vision',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -199,12 +164,12 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Camera Simulation Button
+                      // Live Simulation Button
                       _buildSimulationCard(
                         icon: LucideIcons.camera,
-                        title: 'Live Experience',
+                        title: 'Live Simulation',
                         description:
-                            'Simulate color blindness in real-time and step into the shoes of a color blind person',
+                            'Experience restricted peripheral vision similar to glaucoma or retinitis pigmentosa.',
                         gradientColors: const [
                           Color(0xFFC9F7EB),
                           Color(0xFF97E3D5),
@@ -214,7 +179,8 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                             context,
                             MaterialPageRoute(
                               builder:
-                                  (context) => const ColorBlindSimulation(),
+                                  (context) =>
+                                      const TunnelVisionSimulationPage(),
                             ),
                           );
                         },
@@ -224,9 +190,9 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                       // Interactive Examples Button
                       _buildSimulationCard(
                         icon: LucideIcons.palette,
-                        title: 'Interactive Experience',
+                        title: 'Interactive Learning',
                         description:
-                            'Gain insights into color blindness and discover how to design more accessible, inclusive experience for all users',
+                            'Learn about tunnel vision causes and understand how peripheral vision loss affects navigation.',
                         gradientColors: const [
                           Color(0xFFDFC7F5),
                           Color(0xFFDFC7F5),
@@ -236,8 +202,7 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                             context,
                             MaterialPageRoute(
                               builder:
-                                  (context) =>
-                                      const ColorBlindnessSimulationPage(),
+                                  (context) => const TunnelVisionInfoPage(),
                             ),
                           );
                         },
