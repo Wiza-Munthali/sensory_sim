@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:sensory_sim/visual/blur/blur_info.dart';
+import 'package:sensory_sim/visual/macular/macular_info.dart';
 
 class FinishPage extends StatelessWidget {
   const FinishPage({super.key});
@@ -16,7 +16,7 @@ class FinishPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Vision Simulation Complete',
+                'Macular Degeneration Simulation Complete',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -26,22 +26,22 @@ class FinishPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Continue with educational information',
+                'Continue learning about central vision loss and daily activity impacts',
                 style: TextStyle(fontSize: 16, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               _buildSimulationCard(
                 icon: LucideIcons.palette,
-                title: 'Interactive Blur Examples',
+                title: 'Interactive Learning',
                 description:
-                    'Learn about blurred vision and discover how it affects daily life and accessibility.',
+                    'Understand the stages of macular degeneration and how it affects daily activities.',
                 gradientColors: const [Color(0xFFDFC7F5), Color(0xFFDFC7F5)],
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BlurredVisionInfoPage(),
+                      builder: (context) => const MacularDegenerationInfoPage(),
                     ),
                   );
                 },

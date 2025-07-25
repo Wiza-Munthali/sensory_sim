@@ -3,6 +3,8 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'finish.dart';
 
 class MacularDegenerationSimulationPage extends StatefulWidget {
   const MacularDegenerationSimulationPage({super.key});
@@ -259,51 +261,106 @@ class _MacularDegenerationSimulationPageState
   }
 
   Widget _buildEducationalContent() {
-    return Positioned(
-      bottom: 20,
-      left: 20,
-      right: 20,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white24),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Row(
+    return Column(
+      children: [
+        // Educational content
+        Positioned(
+          bottom: 90,
+          left: 20,
+          right: 20,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white24),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.lightbulb_outline, color: Colors.amber, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  'About Macular Degeneration',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                const Row(
+                  children: [
+                    Icon(Icons.lightbulb_outline, color: Colors.amber, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      'About Macular Degeneration',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Age-related macular degeneration (AMD) affects the center of the retina, causing central vision problems while peripheral vision remains intact.',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // _buildFactCard('11M+', 'Americans affected'),
+                    // _buildFactCard('50+', 'Typical onset age'),
+                    // _buildFactCard('#1', 'Cause of vision loss'),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Age-related macular degeneration (AMD) affects the center of the retina, causing central vision problems while peripheral vision remains intact.',
-              style: TextStyle(color: Colors.white70, fontSize: 12),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // _buildFactCard('11M+', 'Americans affected'),
-                // _buildFactCard('50+', 'Typical onset age'),
-                // _buildFactCard('#1', 'Cause of vision loss'),
-              ],
-            ),
-          ],
+          ),
         ),
-      ),
+        // Next button
+        Positioned(
+          bottom: 20,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FinishPage(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Next',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(
+                      LucideIcons.arrowRight,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

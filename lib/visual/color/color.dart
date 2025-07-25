@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'finish.dart';
 
 class ColorBlindSimulation extends StatefulWidget {
   const ColorBlindSimulation({super.key});
@@ -129,35 +131,88 @@ class _ColorBlindSimulationState extends State<ColorBlindSimulation> {
                           colorFilter: colorBlindFilter,
                           child: CameraPreview(_controller!),
                         ),
+                        // Info text
                         Align(
                           alignment: Alignment.bottomCenter,
-                          child: GestureDetector(
-                            onTap: _showFunFactsDialog,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                  sigmaX: 10,
-                                  sigmaY: 10,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                            child: GestureDetector(
+                              onTap: _showFunFactsDialog,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 10,
+                                    sigmaY: 10,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(
+                                        color: Colors.white.withOpacity(0.2),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Simulating Deuteranopia (Red-Green Color Blindness). Tap to learn more.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
-                                child: Container(
-                                  margin: const EdgeInsets.all(20),
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: Colors.white.withOpacity(0.2),
-                                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Next button
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const FinishPage(),
                                   ),
-                                  child: const Text(
-                                    'Simulating Deuteranopia (Red-Green Color Blindness). Tap to learn more.',
-                                    style: TextStyle(
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Next',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Icon(
+                                      LucideIcons.arrowRight,
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      size: 18,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  ],
                                 ),
                               ),
                             ),
