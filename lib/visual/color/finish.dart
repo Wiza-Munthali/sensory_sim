@@ -9,6 +9,20 @@ class FinishPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+              appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: Container(
+            margin: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20),

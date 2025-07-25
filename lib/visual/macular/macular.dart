@@ -82,25 +82,6 @@ class _MacularDegenerationSimulationPageState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.3),
-        title: const Text(
-          'Macular Degeneration',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _showInfo = !_showInfo;
-              });
-            },
-            icon: Icon(_showInfo ? Icons.visibility_off : Icons.info_outline),
-          ),
-        ],
-      ),
       body:
           _controller == null
               ? const Center(
@@ -129,14 +110,8 @@ class _MacularDegenerationSimulationPageState
                         // Macular degeneration overlay
                         _buildMacularOverlay(),
 
-                        // Severity selector at top
-                        _buildSeveritySelector(),
-
-                        // Information panel
-                        if (_showInfo) _buildInfoPanel(),
-
-                        // Educational content at bottom
-                        _buildEducationalContent(),
+                        // UI Components
+                        _buildUI(),
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -163,153 +138,181 @@ class _MacularDegenerationSimulationPageState
     );
   }
 
-  Widget _buildSeveritySelector() {
-    return Positioned(
-      top: 20,
-      left: 20,
-      right: 20,
-      child: Container(
-        height: 60,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: _severityLevels.length,
-          itemBuilder: (context, index) {
-            final isSelected = _selectedSeverity == index;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedSeverity = index;
-                });
-              },
-              child: Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color:
-                      isSelected
-                          ? Colors.teal.withOpacity(0.9)
-                          : Colors.black.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected ? Colors.teal : Colors.white54,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      _severityLevels[index]['name'],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoPanel() {
-    return Positioned(
-      top: 100,
-      left: 20,
-      right: 20,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white24),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              _severityLevels[_selectedSeverity]['name'],
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _severityLevels[_selectedSeverity]['description'],
-              style: const TextStyle(color: Colors.white70, fontSize: 14),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _severityLevels[_selectedSeverity]['details'],
-              style: const TextStyle(color: Colors.white60, fontSize: 12),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEducationalContent() {
+  Widget _buildUI() {
     return Column(
       children: [
-        // Educational content
-        Positioned(
-          bottom: 90,
-          left: 20,
-          right: 20,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white24),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+        // Header with back button
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
               children: [
-                const Row(
-                  children: [
-                    Icon(Icons.lightbulb_outline, color: Colors.amber, size: 20),
-                    SizedBox(width: 8),
-                    Text(
-                      'About Macular Degeneration',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    LucideIcons.arrowLeft,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+                const Expanded(
+                  child: Text(
+                    'Macular Degeneration',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  ],
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Age-related macular degeneration (AMD) affects the center of the retina, causing central vision problems while peripheral vision remains intact.',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // _buildFactCard('11M+', 'Americans affected'),
-                    // _buildFactCard('50+', 'Typical onset age'),
-                    // _buildFactCard('#1', 'Cause of vision loss'),
-                  ],
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showInfo = !_showInfo;
+                    });
+                  },
+                  icon: Icon(
+                    _showInfo ? Icons.visibility_off : Icons.info_outline,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
               ],
             ),
           ),
         ),
+
+        // Severity selector
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            height: 80,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _severityLevels.length,
+              itemBuilder: (context, index) {
+                final isSelected = _selectedSeverity == index;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedSeverity = index;
+                    });
+                  },
+                  child: Container(
+                    width: 120,
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color:
+                          isSelected
+                              ? Colors.teal.withOpacity(0.8)
+                              : Colors.black.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color:
+                            isSelected
+                                ? Colors.teal
+                                : Colors.white.withOpacity(0.3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _severityLevels[index]['name'],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Expanded(
+                          child: Text(
+                            _severityLevels[index]['description'],
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 10,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+
+        const Spacer(),
+
+        // Information panel
+        if (_showInfo)
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white.withOpacity(0.3)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _severityLevels[_selectedSeverity]['name'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _showInfo = false;
+                          });
+                        },
+                        icon: const Icon(
+                          LucideIcons.x,
+                          color: Colors.white70,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    _severityLevels[_selectedSeverity]['details'],
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Age-related macular degeneration (AMD) affects the center of the retina, causing central vision problems while peripheral vision remains intact.',
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
         // Next button
         Positioned(
           bottom: 20,
@@ -320,9 +323,7 @@ class _MacularDegenerationSimulationPageState
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const FinishPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const FinishPage()),
                 );
               },
               child: Container(
@@ -333,9 +334,7 @@ class _MacularDegenerationSimulationPageState
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(25),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
-                  ),
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
@@ -349,11 +348,7 @@ class _MacularDegenerationSimulationPageState
                       ),
                     ),
                     SizedBox(width: 8),
-                    Icon(
-                      LucideIcons.arrowRight,
-                      color: Colors.white,
-                      size: 18,
-                    ),
+                    Icon(LucideIcons.arrowRight, color: Colors.white, size: 18),
                   ],
                 ),
               ),

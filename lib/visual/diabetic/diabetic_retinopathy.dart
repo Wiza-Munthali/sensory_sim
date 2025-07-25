@@ -167,7 +167,18 @@ class _DiabeticRetinopathySimulationPageState
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(width: 48),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showInfo = !_showInfo;
+                    });
+                  },
+                  icon: Icon(
+                    _showInfo ? Icons.visibility_off : Icons.info_outline,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
           ),
@@ -242,7 +253,7 @@ class _DiabeticRetinopathySimulationPageState
 
         if (_showInfo)
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -298,22 +309,6 @@ class _DiabeticRetinopathySimulationPageState
                   ),
                 ],
               ),
-            ),
-          ),
-
-        if (!_showInfo)
-          Positioned(
-            bottom: 90,
-            right: 20,
-            child: FloatingActionButton(
-              mini: true,
-              backgroundColor: Colors.red.withOpacity(0.8),
-              onPressed: () {
-                setState(() {
-                  _showInfo = true;
-                });
-              },
-              child: const Icon(LucideIcons.info, color: Colors.white),
             ),
           ),
 

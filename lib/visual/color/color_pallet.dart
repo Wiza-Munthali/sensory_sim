@@ -44,11 +44,35 @@ class _ColorBlindnessSimulationPageState
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+         leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
         title: const Text(
           'Color Blindness Simulation',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+           actions: [
+          Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.home, color: Colors.white),
+              onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
