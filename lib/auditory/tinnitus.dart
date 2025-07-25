@@ -239,7 +239,7 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -248,7 +248,7 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
                                     'Tap to hear the high-pitched ringing that simulates this condition.',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.white70,
+                                      color: Colors.black,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
