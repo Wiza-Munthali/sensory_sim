@@ -35,7 +35,7 @@ class _MacularDegenerationIntroPageState
       _controller.setVolume(1.0);
 
       _controller.addListener(() {
-        if (_controller.value.position >= _controller.value.duration && 
+        if (_controller.value.position >= _controller.value.duration &&
             _controller.value.duration > Duration.zero &&
             !_isRestarting) {
           setState(() {
@@ -153,6 +153,7 @@ class _MacularDegenerationIntroPageState
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
                       const Text(
@@ -177,11 +178,12 @@ class _MacularDegenerationIntroPageState
                           Color(0xFF97E3D5),
                         ],
                         onTap: () {
-                         
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MacularDegenerationSimulationPage(),
+                              builder:
+                                  (context) =>
+                                      const MacularDegenerationSimulationPage(),
                             ),
                           );
                         },
@@ -202,7 +204,9 @@ class _MacularDegenerationIntroPageState
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MacularDegenerationInfoPage(),
+                              builder:
+                                  (context) =>
+                                      const MacularDegenerationInfoPage(),
                             ),
                           );
                         },

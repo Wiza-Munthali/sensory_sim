@@ -151,6 +151,7 @@ class _TunnelVisionIntroPageState extends State<TunnelVisionIntroPage> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
                       const Text(

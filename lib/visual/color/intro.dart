@@ -180,12 +180,13 @@ class _ColorBlindnessIntroPageState extends State<ColorBlindnessIntroPage> {
                       const SizedBox(height: 24),
 
                       const Text(
-                        'Experience',
+                        'Experience Color Blindness',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
                       const Text(
