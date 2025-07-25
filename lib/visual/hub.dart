@@ -11,8 +11,19 @@ class VisualDisorderSelectionPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: Colors.black,
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
         title: const Text(
-          'Visual Simulations',
+          'Visual Impairment',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
