@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:sensory_sim/auditory/hub.dart';
 import 'package:sensory_sim/auditory/muffled.dart';
 import 'package:sensory_sim/auditory/tinnitus.dart';
@@ -14,10 +15,11 @@ import 'package:sensory_sim/visual/macular/intro.dart';
 import 'package:sensory_sim/visual/tunnel/intro.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await _initializeFirebase();
-
   runApp(const MainApp());
+  FlutterNativeSplash.remove();
 }
 
 _initializeFirebase() async {

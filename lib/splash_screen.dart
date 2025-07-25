@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 7), () {
+    Timer(const Duration(seconds: 5), () {
       if (mounted) {
         Navigator.of(
           context,
@@ -32,14 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFeffeff), Color(0xFFbffdfe)],
-            stops: [0.0, 1.0],
-          ),
-        ),
+        decoration: const BoxDecoration(color: Color(0xFFEEE5F4)),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,18 +42,11 @@ class _SplashScreenState extends State<SplashScreen>
                 height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'assets/splash.jpg',
+                    'assets/splash_screen.png',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
@@ -86,19 +72,19 @@ class _SplashScreenState extends State<SplashScreen>
                   const Text(
                     'Sensory Sims',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 42,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Color.fromARGB(255, 77, 45, 99),
                       letterSpacing: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 8),
                   Text(
                     'Experience the World Differently',
                     style: TextStyle(
                       fontSize: 16,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black.withOpacity(0.7),
-                      letterSpacing: 0.5,
+                      // letterSpacing: 0.5,
                     ),
                   ),
                 ],

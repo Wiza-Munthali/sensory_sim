@@ -76,37 +76,39 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
   }
 
   Future<void> getFacts() async {
-    const prompt =
-        'Tinnitus. Provide concise and interesting facts about this auditory condition.';
+    try {
+      const prompt =
+          'Tinnitus. Provide concise and interesting facts about this auditory condition.';
 
-    final response = await http.post(
-      Uri.parse('http://192.168.1.199:8888/facts'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({"prompt": prompt}),
-    );
-
-    if (response.statusCode == 200) {
-      final facts = jsonDecode(response.body);
-      _facts = facts['output_text'];
-
-      final ttsResponse = await http.post(
-        Uri.parse('http://192.168.1.199:8888/speak'),
+      final response = await http.post(
+        Uri.parse('https://sensory-backend-8xd4.onrender.com/facts'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "text": _facts,
-          "voice": "nova",
-          "instructions":
-              "Use a calm, thoughtful tone as if guiding someone through a personal experience.",
-        }),
+        body: jsonEncode({"prompt": prompt}),
       );
 
-      if (ttsResponse.statusCode == 200) {
-        final dir = await getTemporaryDirectory();
-        final file = File('${dir.path}/tinnitus_facts.mp3');
-        await file.writeAsBytes(ttsResponse.bodyBytes);
-        await _factAudioPlayer.setFilePath(file.path);
+      if (response.statusCode == 200) {
+        final facts = jsonDecode(response.body);
+        _facts = facts['output_text'];
+
+        final ttsResponse = await http.post(
+          Uri.parse('https://sensory-backend-8xd4.onrender.com/speak'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            "text": _facts,
+            "voice": "nova",
+            "instructions":
+                "Use a calm, thoughtful tone as if guiding someone through a personal experience.",
+          }),
+        );
+
+        if (ttsResponse.statusCode == 200) {
+          final dir = await getTemporaryDirectory();
+          final file = File('${dir.path}/tinnitus_facts.mp3');
+          await file.writeAsBytes(ttsResponse.bodyBytes);
+          await _factAudioPlayer.setFilePath(file.path);
+        }
       }
-    }
+    } catch (e) {}
   }
 
   void _showFunFactsDialog() {

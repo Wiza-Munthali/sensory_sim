@@ -86,7 +86,7 @@ class _MuffledHearingSimulationPageState
           'Muffled hearing or conductive hearing loss. Provide interesting facts about this condition.';
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.199:8888/facts'),
+        Uri.parse('https://sensory-backend-8xd4.onrender.com/facts'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({"prompt": prompt}),
       );
@@ -96,7 +96,7 @@ class _MuffledHearingSimulationPageState
         _facts = facts['output_text'];
 
         final ttsResponse = await http.post(
-          Uri.parse('http://192.168.1.199:8888/speak'),
+          Uri.parse('https://sensory-backend-8xd4.onrender.com/speak'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "text": _facts,
