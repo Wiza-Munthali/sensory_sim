@@ -4,10 +4,12 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:http/http.dart' as http;
+import 'finish.dart';
 
 class TunnelVisionSimulationPage extends StatefulWidget {
   const TunnelVisionSimulationPage({super.key});
@@ -89,24 +91,77 @@ class _TunnelVisionSimulationPageState
                           blendMode: BlendMode.dstOut,
                           child: Container(color: Colors.black),
                         ),
+                        // Info text
                         Align(
                           alignment: Alignment.bottomCenter,
-                          child: GestureDetector(
-                            onTap: _showFunFactsDialog,
-                            child: Container(
-                              margin: const EdgeInsets.all(20),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: const Text(
-                                'This simulates tunnel vision from conditions like glaucoma or retinitis pigmentosa.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                            child: GestureDetector(
+                              onTap: _showFunFactsDialog,
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
-                                textAlign: TextAlign.center,
+                                child: const Text(
+                                  'This simulates tunnel vision from conditions like glaucoma or retinitis pigmentosa.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Next button
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const FinishPage(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Next',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Icon(
+                                      LucideIcons.arrowRight,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

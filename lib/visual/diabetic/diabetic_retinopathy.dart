@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'finish.dart';
 
 class DiabeticRetinopathySimulationPage extends StatefulWidget {
   const DiabeticRetinopathySimulationPage({super.key});
@@ -19,10 +20,9 @@ class _DiabeticRetinopathySimulationPageState
   late Future<void> _initializeControllerFuture;
   late List<CameraDescription> _cameras;
 
-  int _selectedSeverity = 0; 
+  int _selectedSeverity = 0;
   bool _showInfo = true;
 
-  
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -123,13 +123,10 @@ class _DiabeticRetinopathySimulationPageState
                     return Stack(
                       fit: StackFit.expand,
                       children: [
-                        
                         CameraPreview(_controller!),
 
-                        
                         if (_selectedSeverity > 0) _buildVisionEffects(),
 
-                        
                         _buildUI(),
                       ],
                     );
@@ -146,7 +143,6 @@ class _DiabeticRetinopathySimulationPageState
   Widget _buildUI() {
     return Column(
       children: [
-        
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -177,7 +173,6 @@ class _DiabeticRetinopathySimulationPageState
           ),
         ),
 
-        
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
@@ -245,10 +240,9 @@ class _DiabeticRetinopathySimulationPageState
 
         const Spacer(),
 
-        
         if (_showInfo)
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -307,24 +301,64 @@ class _DiabeticRetinopathySimulationPageState
             ),
           ),
 
-        
         if (!_showInfo)
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                mini: true,
-                backgroundColor: Colors.red.withOpacity(0.8),
-                onPressed: () {
-                  setState(() {
-                    _showInfo = true;
-                  });
-                },
-                child: const Icon(LucideIcons.info, color: Colors.white),
+          Positioned(
+            bottom: 90,
+            right: 20,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.red.withOpacity(0.8),
+              onPressed: () {
+                setState(() {
+                  _showInfo = true;
+                });
+              },
+              child: const Icon(LucideIcons.info, color: Colors.white),
+            ),
+          ),
+
+        // Next button
+        Positioned(
+          bottom: 20,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FinishPage()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Next',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(LucideIcons.arrowRight, color: Colors.white, size: 18),
+                  ],
+                ),
               ),
             ),
           ),
+        ),
       ],
     );
   }
@@ -335,7 +369,6 @@ class _DiabeticRetinopathySimulationPageState
       builder: (context, child) {
         return Stack(
           children: [
-            
             if (_selectedSeverity >= 2)
               BackdropFilter(
                 filter: ImageFilter.blur(
@@ -345,7 +378,6 @@ class _DiabeticRetinopathySimulationPageState
                 child: Container(color: Colors.transparent),
               ),
 
-            
             if (_selectedSeverity == 3)
               ClipPath(
                 clipper: _FocalBlurClipper(),
@@ -355,7 +387,6 @@ class _DiabeticRetinopathySimulationPageState
                 ),
               ),
 
-            
             CustomPaint(
               painter: DiabeticRetinopathyPainter(
                 severity: _selectedSeverity,
@@ -374,9 +405,8 @@ class _FocalBlurClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-      final random = Random(1); 
+    final random = Random(1);
 
-    
     for (int i = 0; i < 3; i++) {
       final centerX = size.width * (0.2 + random.nextDouble() * 0.6);
       final centerY = size.height * (0.2 + random.nextDouble() * 0.6);
@@ -415,7 +445,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (severity == 0) return;
 
-    
     if (size.width <= 0 ||
         size.height <= 0 ||
         !size.width.isFinite ||
@@ -423,14 +452,12 @@ class DiabeticRetinopathyPainter extends CustomPainter {
       return;
     if (!animationValue.isFinite) return;
 
-    final random = Random(42); 
+    final random = Random(42);
     final center = Offset(size.width / 2, size.height / 2);
 
-    
     if (!center.dx.isFinite || !center.dy.isFinite) return;
 
     try {
-      
       switch (severity) {
         case 1:
           _drawMildSymptoms(canvas, size, center, random);
@@ -446,7 +473,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
           break;
       }
     } catch (e) {
-      
       print('Diabetic retinopathy painting error: $e');
     }
   }
@@ -457,7 +483,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
     Offset center,
     Random random,
   ) {
-    
     for (int i = 0; i < 12; i++) {
       final angle = (i / 12) * 2 * pi + random.nextDouble() * 0.5;
       final distance = 80 + random.nextDouble() * 250;
@@ -471,7 +496,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
       }
     }
 
-    
     for (int i = 0; i < 8; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
@@ -485,7 +509,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
     Offset center,
     Random random,
   ) {
-    
     for (int i = 0; i < 8; i++) {
       final angle = (i / 8) * 2 * pi + random.nextDouble() * 1.0;
       final distance = 100 + random.nextDouble() * 200;
@@ -531,14 +554,14 @@ class DiabeticRetinopathyPainter extends CustomPainter {
       _drawRealisticFloater(canvas, size, center, random, i);
     }
 
-    // Large irregular hemorrhages 
+    // Large irregular hemorrhages
     for (int i = 0; i < 4; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
       _drawSevereHemorrhage(canvas, Offset(x, y), random);
     }
 
-    // Patchy vision loss areas (scotomas) 
+    // Patchy vision loss areas (scotomas)
     for (int i = 0; i < 5; i++) {
       final x = size.width * (0.15 + random.nextDouble() * 0.7);
       final y = size.height * (0.15 + random.nextDouble() * 0.7);
@@ -774,7 +797,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
   }
 
   void _drawHardExudate(Canvas canvas, Offset center, Random random) {
-    
     if (!center.dx.isFinite || !center.dy.isFinite) return;
 
     // Waxy, yellowish lipid deposits with a clumpy, soft appearance.
@@ -815,7 +837,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
   }
 
   void _drawCottonWoolSpot(Canvas canvas, Offset center, Random random) {
-    
     if (!center.dx.isFinite || !center.dy.isFinite) return;
 
     // Fluffy, cloud-like nerve fiber layer infarcts.
@@ -870,7 +891,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
   }
 
   void _drawLargeHemorrhage(Canvas canvas, Offset center, Random random) {
-    
     if (!center.dx.isFinite || !center.dy.isFinite) return;
 
     // Larger, deeper bleeding with more diffuse edges.
@@ -915,7 +935,6 @@ class DiabeticRetinopathyPainter extends CustomPainter {
   }
 
   void _drawSevereHemorrhage(Canvas canvas, Offset center, Random random) {
-    
     if (!center.dx.isFinite || !center.dy.isFinite) return;
 
     // Large, irregular hemorrhage with realistic bleeding patterns
@@ -956,7 +975,7 @@ class DiabeticRetinopathyPainter extends CustomPainter {
       canvas.drawPath(path, paint);
     }
 
-      // internal texture to simulate blood pooling
+    // internal texture to simulate blood pooling
     final texturePaint =
         Paint()
           ..color = Colors.red.shade900.withOpacity(0.3)

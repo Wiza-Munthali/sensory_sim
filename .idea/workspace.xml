@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d68af578-83d5-4047-b0aa-7c9f9ff780ab" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/blur.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/color/intro.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/visual/color/intro.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/diabetic_retinopathy.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/hub.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/visual/hub.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/macular.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/visual/tunnel.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/visual/blur/blur.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/visual/blur/blur.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/visual/blur/finish.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/visual/blur/finish.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +32,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "sande11"
+  }
+}]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Wiza-Munthali/sensory_sim.git",
@@ -72,6 +73,7 @@
     "git-widget-placeholder": "complete-work-flow",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/oxygenalliance/sensory_sim",
+    "settings.editor.selected.configurable": "dart.settings",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
