@@ -62,6 +62,17 @@ class _TunnelVisionSimulationPageState
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black54,
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: Colors.black,
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
         title: const Text(
           'Tunnel Vision Simulation',
           style: TextStyle(color: Colors.white),
