@@ -91,6 +91,7 @@ class _BlurIntroPageState extends State<BlurIntroPage> {
                 onTap: () {
                   setState(() {
                     _videoFinished = true;
+                    _controller.seekTo(_controller.value.duration);
                   });
                 },
                 child: Container(

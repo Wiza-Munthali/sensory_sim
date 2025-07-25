@@ -95,7 +95,7 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "text": _facts,
-            "voice": "nova",
+            "voice": "ash",
             "instructions":
                 "Use a calm, thoughtful tone as if guiding someone through a personal experience.",
           }),
@@ -233,7 +233,7 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
                                   Icon(
                                     Icons.graphic_eq_rounded,
                                     size: 48,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                   SizedBox(height: 16),
                                   Text(
@@ -334,24 +334,35 @@ class _TinnitusSimulationPageState extends State<TinnitusSimulationPage> {
                 Text(
                   'Tinnitus Simulation',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.black,
+                    color: !hideElements ? Colors.white : Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      hideElements = false;
+                      _controller.seekTo(_controller.value.duration);
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    color: Colors.black,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/');
-                    },
-                    child: const Icon(Icons.home_rounded, color: Colors.white),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ],

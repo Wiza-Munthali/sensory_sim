@@ -14,7 +14,7 @@ class SensorySimHomePage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(
-          'SensorySim',
+          'Sensory Sims',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

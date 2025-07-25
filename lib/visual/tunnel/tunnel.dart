@@ -256,10 +256,10 @@ class _TunnelVisionSimulationPageState
         final result = await http.post(
           Uri.parse('https://sensory-backend-8xd4.onrender.com/speak'),
           headers: {'Content-Type': 'application/json'},
-          // body: '{"text": "$text", "voice": "nova"}',
+          // body: '{"text": "$text", "voice": "ash"}',
           body: jsonEncode({
             "text": _facts,
-            "voice": "nova",
+            "voice": "ash",
             "instructions":
                 "Speak like you're reassuring a close friend — gentle, sincere, and full of kindness.",
           }),

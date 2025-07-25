@@ -35,7 +35,7 @@ class _DiabeticRetinopathyIntroPageState
       _controller.setVolume(1.0);
 
       _controller.addListener(() {
-        if (_controller.value.position >= _controller.value.duration && 
+        if (_controller.value.position >= _controller.value.duration &&
             _controller.value.duration > Duration.zero &&
             !_isRestarting) {
           setState(() {
@@ -95,6 +95,7 @@ class _DiabeticRetinopathyIntroPageState
                 onTap: () {
                   setState(() {
                     _videoFinished = true;
+                    _controller.seekTo(_controller.value.duration);
                   });
                 },
                 child: Container(
@@ -181,7 +182,9 @@ class _DiabeticRetinopathyIntroPageState
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DiabeticRetinopathySimulationPage(),
+                              builder:
+                                  (context) =>
+                                      const DiabeticRetinopathySimulationPage(),
                             ),
                           );
                         },
@@ -202,7 +205,9 @@ class _DiabeticRetinopathyIntroPageState
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DiabeticRetinopathyInfoPage(),
+                              builder:
+                                  (context) =>
+                                      const DiabeticRetinopathyInfoPage(),
                             ),
                           );
                         },

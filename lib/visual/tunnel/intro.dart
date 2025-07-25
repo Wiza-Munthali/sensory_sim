@@ -93,6 +93,7 @@ class _TunnelVisionIntroPageState extends State<TunnelVisionIntroPage> {
                 onTap: () {
                   setState(() {
                     _videoFinished = true;
+                    _controller.seekTo(_controller.value.duration);
                   });
                 },
                 child: Container(

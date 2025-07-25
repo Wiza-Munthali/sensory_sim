@@ -100,7 +100,7 @@ class _MuffledHearingSimulationPageState
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "text": _facts,
-            "voice": "nova",
+            "voice": "ash",
             "instructions":
                 "Speak calmly like you're helping someone understand a new experience for the first time.",
           }),
@@ -240,55 +240,64 @@ class _MuffledHearingSimulationPageState
             child:
                 hideElements
                     ? const SizedBox.shrink()
-                    : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Experience",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black54,
+                    : Container(
+                      height: height,
+                      width: width,
+                      color: Colors.black.withOpacity(0.5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Experience",
+                            style: Theme.of(
+                              context,
+                            ).textTheme.headlineSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 40),
-                        _buildAudioCard(
-                          level: 'normal',
-                          label: 'Normal Hearing',
-                          color: const Color.fromARGB(255, 35, 129, 222),
-                        ),
-                        _buildAudioCard(
-                          level: 'moderate',
-                          label: 'Moderate Muffled Hearing',
-                          color: const Color.fromARGB(255, 76, 89, 118),
-                        ),
-                        _buildAudioCard(
-                          level: 'severe',
-                          label: 'Severe Muffled Hearing',
-                          color: const Color.fromARGB(255, 33, 36, 40),
-                        ),
-
-                        const SizedBox(height: 60),
-
-                        IconButton(
-                          onPressed: () {
-                            _controller.seekTo(Duration.zero);
-                            _controller.play();
-                            setState(() {
-                              hideElements = true;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.replay_rounded,
-                            color: Colors.white,
-                            size: 36,
+                          const SizedBox(height: 40),
+                          _buildAudioCard(
+                            level: 'normal',
+                            label: 'Normal Hearing',
+                            color: const Color.fromARGB(255, 35, 129, 222),
                           ),
-                        ),
-                        const Text(
-                          'Replay',
-                          style: TextStyle(fontSize: 14, color: Colors.white70),
-                        ),
-                      ],
+                          _buildAudioCard(
+                            level: 'moderate',
+                            label: 'Moderate Muffled Hearing',
+                            color: const Color.fromARGB(255, 76, 89, 118),
+                          ),
+                          _buildAudioCard(
+                            level: 'severe',
+                            label: 'Severe Muffled Hearing',
+                            color: const Color.fromARGB(255, 33, 36, 40),
+                          ),
+
+                          const SizedBox(height: 60),
+
+                          IconButton(
+                            onPressed: () {
+                              _controller.seekTo(Duration.zero);
+                              _controller.play();
+                              setState(() {
+                                hideElements = true;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.replay_rounded,
+                              color: Colors.white,
+                              size: 36,
+                            ),
+                          ),
+                          const Text(
+                            'Replay',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
           ),
           AnimatedSwitcher(
@@ -340,26 +349,37 @@ class _MuffledHearingSimulationPageState
                   child: Text(
                     'Muffled Hearing Simulation',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.black,
+                      color: !hideElements ? Colors.white : Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
 
-                Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      hideElements = false;
+                      _controller.seekTo(_controller.value.duration);
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    color: Colors.black,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/');
-                    },
-                    child: const Icon(Icons.home_rounded, color: Colors.white),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ],
